@@ -30,8 +30,16 @@ public class AuthorityFilter extends HttpFilter {
 
 		// Those urls which do not need to be checked
 		List<String> uncheckedUrls = Arrays.asList("/403.jsp", "/articles.jsp", "/authority-manager.jsp", "/login.jsp",
-				"/logout.jsp");
+				"/logout.jsp","/bbs.jsp","/content.jsp");
 
+		if(request.getParameter("content") != null){
+			String content = request.getParameter("content");
+			request.setAttribute("content", content);
+			chain.doFilter(request, response);
+			return;
+		} 
+		
+		
 		if (uncheckedUrls.contains(servletPath)) {
 			chain.doFilter(request, response);
 			return;
@@ -59,6 +67,9 @@ public class AuthorityFilter extends HttpFilter {
 				
 			}
 		}
+		
+		
+		
 		
 
 		response.sendRedirect(request.getContextPath() + "/403.jsp");
